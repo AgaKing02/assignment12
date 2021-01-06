@@ -5,9 +5,12 @@ import com.apj2.assignment12.services.FileService;
 
 import java.io.File;
 import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Callable;
 
 
-public class Consumer2 implements Runnable {
+public class Consumer2 implements Callable<List<Result>> {
     private static final SecureRandom generator = new SecureRandom();
     private final Buffer sharedLocation;
 
@@ -15,15 +18,19 @@ public class Consumer2 implements Runnable {
         this.sharedLocation = sharedLocation;
     }
 
+
     @Override
-    public void run() {
+    public List<Result> call() throws Exception {
+        List<Result> resultList=new ArrayList<>();
         for (File file : FileService.getFilesFromPath()) {
             try {
-                File file1 = sharedLocation.syncGet();
-                System.out.println("Consumer read now " + file1.getName());
+                 resultList.add(sharedLocation.syncGet());
+                System.out.println("Consumer read now " + file.getName());
             } catch (InterruptedException exception) {
                 Thread.currentThread().interrupt();
             }
         }
+
+        return resultList;
     }
 }

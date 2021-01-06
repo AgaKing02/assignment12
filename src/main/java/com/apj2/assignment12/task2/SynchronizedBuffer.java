@@ -12,6 +12,7 @@ import java.util.Scanner;
 
 public class SynchronizedBuffer implements Buffer {
     private File buffer;
+    private Result result;
     private volatile boolean occupied = false;
 
     @Override
@@ -24,31 +25,27 @@ public class SynchronizedBuffer implements Buffer {
         buffer = data;
         occupied = true;
         try {
-            if(data.getName().substring(data.getName().lastIndexOf('.')).equals(".pdf")){
+            if (data.getName().substring(data.getName().lastIndexOf('.')).equals(".pdf")) {
                 PDDocument document = PDDocument.load(data);
                 //Instantiate PDFTextStripper class
                 PDFTextStripper pdfStripper = new PDFTextStripper();
                 //Retrieving text from PDF document
                 String text = pdfStripper.getText(document);
-                String[] words=text.split(" ");
-                for(String part:words){
-                    if(part.equals(word)){
+                String[] words = text.split(" ");
+                for (String part : words) {
+                    if (part.equals(word)) {
                         count++;
                     }
                 }
                 document.close();
-            }else{
+            } else {
                 Scanner scanner = new Scanner(data);
                 while (scanner.hasNext()) {
                     if (scanner.next().equals(word))
                         count++;
                 }
             }
-
-
-
-
-            ResultHolder.addOccurrence(data.getName(), count);
+            result = new Result(buffer.getName(), count);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -57,7 +54,7 @@ public class SynchronizedBuffer implements Buffer {
     }
 
     @Override
-    public synchronized File syncGet() throws InterruptedException {
+    public synchronized Result syncGet() throws InterruptedException {
         while (!occupied) {
             System.out.println("Consumer tries to read.");
             wait();
@@ -65,7 +62,7 @@ public class SynchronizedBuffer implements Buffer {
 
         occupied = false;
         notifyAll();
-        return buffer;
+        return result;
     }
 }
 

@@ -1,21 +1,20 @@
 package com.apj2.assignment12.task2;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ResultHolder {
-    public static Map<String,Integer> occurrence=new HashMap<>();
+    public  List<Result> occurrence = new ArrayList<>();
 
-
-    public static void addOccurrence(String file,Integer result){
-        ResultHolder.occurrence.put(file,result);
+    public ResultHolder(List<Result> occurrence) {
+        this.occurrence = occurrence;
     }
 
-    public static Map<String, Integer> getOccurrence() {
-        return ResultHolder.occurrence;
+    public List<Result> getOccurrence() {
+        return occurrence;
     }
 
-    public static void setOccurrence(Map<String, Integer> occurrence) {
-        ResultHolder.occurrence = occurrence;
+    public void setOccurrence(List<Result> occurrence) {
+        this.occurrence = occurrence;
     }
 }

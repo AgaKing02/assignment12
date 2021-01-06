@@ -6,5 +6,5 @@ import java.io.IOException;
 public interface Buffer {
     void syncPutAndSearch(String word, File file) throws InterruptedException, IOException;
 
-    File syncGet() throws InterruptedException;
+    Result syncGet() throws InterruptedException;
 }
