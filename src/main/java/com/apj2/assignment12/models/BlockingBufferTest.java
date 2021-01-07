@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 public class BlockingBufferTest {
     public static void main() throws InterruptedException {
         // create new thread pool
-        ExecutorService executorService = Executors.newCachedThreadPool();
+        ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         // create BlockingBuffer to store ints
         Buffer<java.io.File> sharedLocation = new BlockingBuffer();
         executorService.execute(new Producer(sharedLocation));

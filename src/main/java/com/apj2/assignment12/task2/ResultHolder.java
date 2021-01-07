@@ -10,6 +10,10 @@ public class ResultHolder {
         this.occurrence = occurrence;
     }
 
+    public ResultHolder() {
+
+    }
+
     public List<Result> getOccurrence() {
         return occurrence;
     }
